@@ -1,23 +1,15 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  /*
-  const encryptPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
-  };
-  */
-
   const handleSubmit = (event) => {
     event.preventDefault();
-
     axios
       .post("http://localhost:3001/register", {
         username: username,
@@ -33,38 +25,60 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1>Register Now</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="number">Username</label>
-        <input
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
-          type="text"
-          name="username"
-          id="username"
-        />
-
-        <label htmlFor="email">Email</label>
-        <input
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          type="email"
-          name="email"
-          id="email"
-        />
-
-        <label htmlFor="password">Password</label>
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          name="password"
-          id="password"
-        />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Container maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Register Now
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+            Register
+          </Button>
+          <a href="/">Already have an account? Login now!</a>
+        </Box>
+      </Box>
+    </Container>
   );
 }
 
