@@ -5,6 +5,8 @@ import Header from "./Header";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { useContext } from "react";
+import { UserId } from "../contexts/UserId";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function DailyWeight() {
+  const { userId } = useContext(UserId);
   const classes = useStyles();
   const [weight, setWeight] = useState("");
   const [bodyfat, setBodyFat] = useState("");
@@ -39,6 +42,7 @@ function DailyWeight() {
     event.preventDefault();
     axios
       .post("http://localhost:3001/sendWeight", {
+        userid: userId,
         weight: weight,
         bodyfat: bodyfat,
       })

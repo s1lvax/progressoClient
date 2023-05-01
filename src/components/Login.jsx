@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { UserId } from "../contexts/UserId";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   TextField,
@@ -26,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUserId } = useContext(UserId);
   const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
@@ -38,10 +43,10 @@ function Login() {
         password: password,
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           // Login successful, redirect the user to the /stat page
-          window.location.href = "/home";
+          setUserId(response.data.userId);
+          navigate("/home");
         } else {
           // Login failed, display an error message or handle the error as appropriate
           console.log("Login failed");
