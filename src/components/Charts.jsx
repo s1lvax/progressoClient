@@ -6,14 +6,26 @@ function Charts() {
   const { userId } = useContext(UserId);
   const [weightStats, setWeightStats] = useState([]);
   const [bfStats, setBFStats] = useState([]);
+  const [avgWeight, setAvgWeight] = useState(null);
+  const [avgBf, setAvgBf] = useState(null);
+
   useEffect(() => {
     axios
       .get(`http://localhost:3001/getStats/${userId}`)
       .then((response) => {
-        const weightData = response.data.map((entry) => entry.weight);
-        const bfData = response.data.map((entry) => entry.bodyfat);
+        const data = JSON.parse(response.data); // Parse the JSON string to a JavaScript object
+        const weightData = data.weight;
+        const bfData = data.bodyfat;
+        const avgWeight = data.avgWeight;
+        const avgBf = data.avgBf;
+
+        //all the stats into arrays
         setWeightStats(weightData);
         setBFStats(bfData);
+
+        //average values
+        setAvgWeight(avgWeight);
+        setAvgBf(avgBf);
       })
       .catch((error) => {
         console.log(error);
@@ -22,9 +34,11 @@ function Charts() {
 
   return (
     <div>
-      <h1>Working</h1>
-      <div>{weightStats}</div>
-      <div>{bfStats}</div>
+      <div>Your weight stats are : {weightStats}</div>
+      <div>Your BF stats are: {bfStats}</div>
+      <br />
+      <div>Your Average Weight is: {avgWeight}</div>
+      <div>Your Average BF is: {avgBf}</div>
     </div>
   );
 }
